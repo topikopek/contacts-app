@@ -30,4 +30,21 @@ const detailContact = async (nama) => {
   return contact;
 };
 
-module.exports = { loadContact, detailContact };
+const cekDuplikat = async (nama) => {
+  const contacts = await loadContact();
+  return contacts.find(
+    (contact) => contact.nama.toLowerCase() === nama.toLowerCase(),
+  );
+};
+
+const saveContact = async (contacts) => {
+  await write("./data/contacts.json", JSON.stringify(contacts, null, 2));
+};
+
+const addContact = async (contact) => {
+  const contacts = await loadContact();
+  contacts.push(contact);
+  saveContact(contacts);
+};
+
+module.exports = { loadContact, detailContact, cekDuplikat, addContact };
