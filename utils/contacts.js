@@ -24,10 +24,9 @@ async function loadContact() {
   }
 })();
 
-const detailContact = async (nama) => {
+const findContact = async (nama) => {
   const contacts = await loadContact();
-  const contact = contacts.find((contact) => contact.nama === nama);
-  return contact;
+  return contacts.find((contact) => contact.nama === nama);
 };
 
 const cekDuplikat = async (nama) => {
@@ -47,4 +46,27 @@ const addContact = async (contact) => {
   saveContact(contacts);
 };
 
-module.exports = { loadContact, detailContact, cekDuplikat, addContact };
+const deleteContact = async (nama) => {
+  const contacts = await loadContact();
+  const filteredContacts = contacts.filter((contact) => contact.nama !== nama);
+  saveContact(filteredContacts);
+};
+
+const updateContacts = async (newContacts) => {
+  const contacts = await loadContact();
+  const filteredContacts = contacts.filter(
+    (contact) => contact.nama !== newContacts.oldNama,
+  );
+  delete newContacts.oldNama;
+  filteredContacts.push(newContacts);
+  saveContact(filteredContacts);
+};
+
+module.exports = {
+  loadContact,
+  findContact,
+  cekDuplikat,
+  addContact,
+  deleteContact,
+  updateContacts,
+};
